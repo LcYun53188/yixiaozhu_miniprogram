@@ -1,0 +1,48 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">发布信息</view>
+    <view class="hero-subtitle">可以发布“我有资源”或“我需要资源”，提交后进入管理员审核。</view>
+  </view>
+
+  <view class="section">
+    <view class="tags">
+      <text class="tag" bindtap="setType" data-type="resource">我有资源</text>
+      <text class="tag" bindtap="setType" data-type="need">我需要资源</text>
+    </view>
+    <input class="input form-input" placeholder-class="input-placeholder" placeholder="标题" value="{{form.title}}" data-field="title" bindinput="onInput" />
+    <picker range="{{categories}}" bindchange="onCategory">
+      <view class="picker">分类：{{form.category || '请选择'}}</view>
+    </picker>
+    <view class="image-panel">
+      <view class="image-list">
+        <view class="image-item" wx:for="{{form.imageUrls}}" wx:key="*this">
+          <image class="preview-image" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}" />
+          <view class="remove-image" bindtap="removeImage" data-index="{{index}}">删除</view>
+        </view>
+        <view class="add-image" wx:if="{{form.imageUrls.length < 3}}" bindtap="chooseImages">
+          <view class="add-plus">+</view>
+          <view class="muted">添加图片</view>
+        </view>
+      </view>
+      <view class="muted">最多添加 3 张图片，用于展示物品、失物或活动信息。</view>
+    </view>
+    <textarea class="textarea" placeholder="描述物品状态、需求原因、对接地点等" value="{{form.description}}" data-field="description" bindinput="onInput" />
+    <input class="input form-input" placeholder-class="input-placeholder" placeholder="联系方式，如手机号 / 微信号" value="{{form.contactInfo}}" data-field="contactInfo" bindinput="onInput" />
+    <input class="input form-input" placeholder-class="input-placeholder" placeholder="交接地点，如图书馆门口" value="{{form.locationText}}" data-field="locationText" bindinput="onInput" wx:if="{{type === 'resource'}}" />
+  </view>
+
+  <view class="section">
+    <view class="section-title">AI 辅助</view>
+    <view class="button secondary" bindtap="extractTags">智能提取标签</view>
+    <view class="button secondary" bindtap="polishText">优化描述</view>
+    <view class="card" wx:if="{{form.tags.length || form.polishedText}}">
+      <view class="muted">AI 结果</view>
+      <view class="tags">
+        <text class="tag" wx:for="{{form.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+      <view class="muted">{{form.polishedText}}</view>
+    </view>
+  </view>
+
+  <view class="button" bindtap="submit">确认发布</view>
+</view>

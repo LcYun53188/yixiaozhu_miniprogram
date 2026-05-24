@@ -1,0 +1,38 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">智能匹配</view>
+    <view class="hero-subtitle">根据分类、标签、关键词和紧急程度生成推荐分数与推荐理由。</view>
+  </view>
+
+  <view class="section">
+    <view class="card" wx:for="{{matches}}" wx:key="id">
+      <view class="card-title">{{item.resource.title}} ↔ {{item.need.title}}</view>
+      <view class="muted">匹配度 {{item.matchScore}}% · {{item.matchStatusText}}</view>
+      <view class="section">{{item.matchReason}}</view>
+      <view class="muted">资源方：{{item.resourceUser.nickname}} · 信誉 {{item.resourceUser.creditScore}}</view>
+      <view class="muted">需求方：{{item.needUser.nickname}} · 信誉 {{item.needUser.creditScore}}</view>
+      <view class="action-row">
+        <view class="mini-button" bindtap="markContacted" data-id="{{item.id}}">标记已联系</view>
+        <view class="mini-button primary" bindtap="openFeedback" data-id="{{item.id}}">评价对方</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="feedback-panel" wx:if="{{feedbackVisible}}">
+    <view class="card">
+      <view class="card-title">提交对接评价</view>
+      <view class="muted">评分会影响对方信誉积分，请根据真实对接体验填写。</view>
+      <view class="rating-row">
+        <text class="rating-star {{feedback.rating >= item ? 'active' : ''}}" wx:for="{{ratingOptions}}" wx:key="*this" bindtap="selectRating" data-rating="{{item}}">★</text>
+      </view>
+      <input class="input" placeholder-class="input-placeholder" placeholder="评价内容，如沟通及时、物品真实" value="{{feedback.content}}" bindinput="onFeedbackContent" />
+      <view class="tags">
+        <text class="tag" wx:for="{{feedbackTags}}" wx:key="*this" bindtap="toggleTag" data-tag="{{item}}">{{item}}</text>
+      </view>
+      <view class="action-row">
+        <view class="mini-button" bindtap="closeFeedback">取消</view>
+        <view class="mini-button primary" bindtap="submitFeedback">提交评价</view>
+      </view>
+    </view>
+  </view>
+</view>

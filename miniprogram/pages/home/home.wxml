@@ -1,0 +1,32 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">益小助</view>
+    <view class="hero-subtitle">基于 AI 的校园公益资源智能匹配平台，让闲置资源更快遇见真正需要的人。</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">分类入口</view>
+    <view class="grid">
+      <view class="grid-item" wx:for="{{categories}}" wx:key="*this" bindtap="goCategory" data-category="{{item}}">{{item}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">AI 推荐</view>
+    <view class="card" wx:for="{{resources}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-type="resource">
+      <view class="card-title">{{item.title}}</view>
+      <view class="muted">{{item.category}} · {{item.flowStatusText}}</view>
+      <view class="tags">
+        <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">最新需求</view>
+    <view class="card" wx:for="{{needs}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-type="need">
+      <view class="card-title">{{item.title}}</view>
+      <view class="muted">{{item.category}} · 紧急程度 {{item.urgencyLevelText}}</view>
+    </view>
+  </view>
+</view>

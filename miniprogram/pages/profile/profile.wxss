@@ -1,0 +1,13 @@
+.grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.danger {
+  background: #fff0e8;
+  color: #b8512f;
+}
+
+.disabled {
+  background: #eef1ec;
+  color: #9aa59d;
+}

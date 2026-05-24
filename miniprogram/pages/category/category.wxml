@@ -1,0 +1,23 @@
+<view class="page">
+  <view class="section-title">分类浏览</view>
+  <input class="input search-input" placeholder-class="input-placeholder" placeholder="搜索旧书 / 闲置物资 / 失物招领" value="{{keyword}}" bindinput="onKeyword" confirm-type="search" bindconfirm="loadData" />
+  <view class="tags">
+    <text class="tag" wx:for="{{categories}}" wx:key="*this" bindtap="selectCategory" data-category="{{item}}">{{item}}</text>
+  </view>
+
+  <view class="section">
+    <view class="section-title">资源</view>
+    <view class="card" wx:for="{{resources}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-type="resource">
+      <view class="card-title">{{item.title}}</view>
+      <view class="muted">{{item.category}} · {{item.reviewStatusText}}</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">需求</view>
+    <view class="card" wx:for="{{needs}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" data-type="need">
+      <view class="card-title">{{item.title}}</view>
+      <view class="muted">{{item.category}} · {{item.reviewStatusText}}</view>
+    </view>
+  </view>
+</view>

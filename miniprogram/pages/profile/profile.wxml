@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-title">{{user.nickname || '校园用户'}}</view>
+    <view class="hero-subtitle">身份：{{user.roleText || '普通用户'}} · {{user.college || '未填写学院'}}</view>
+  </view>
+
+  <view class="section grid">
+    <view class="grid-item" bindtap="goMessage">消息与记录</view>
+    <view class="grid-item" bindtap="goMatch">匹配记录</view>
+    <view class="grid-item" wx:if="{{user.role !== 'admin' && user.role !== 'super_admin'}}" bindtap="loginAsAdmin">管理员演示登录</view>
+    <view class="grid-item danger" wx:else bindtap="logoutAdmin">退出管理员</view>
+    <view class="grid-item" wx:if="{{user.role === 'admin' || user.role === 'super_admin'}}" bindtap="goAdmin">后台管理</view>
+    <view class="grid-item disabled" wx:else>后台管理</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">我的数据</view>
+    <view class="card">
+      <view>已发布资源：{{summary.resourceCount}}</view>
+      <view>已提交需求：{{summary.needCount}}</view>
+      <view>匹配记录：{{summary.matchCount}}</view>
+      <view>信誉积分：{{user.creditScore || 100}}</view>
+      <view>收到评价：{{user.ratingCount || 0}} 次</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">我的评价</view>
+    <view class="card" wx:for="{{feedbacks}}" wx:key="id">
+      <view class="card-title">{{item.rating}} 星评价</view>
+      <view class="muted">{{item.fromUser.nickname}} 评价 {{item.toUser.nickname}} · 信誉变化 {{item.creditDelta}}</view>
+      <view>{{item.content || '暂无文字评价'}}</view>
+      <view class="tags">
+        <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+    <view class="muted" wx:if="{{!feedbacks.length}}">暂无评价记录。</view>
+  </view>
+</view>

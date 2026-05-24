@@ -1,0 +1,48 @@
+.card-title {
+  line-height: 1.5;
+}
+
+.action-row {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 20rpx;
+}
+
+.mini-button {
+  flex: 1;
+  padding: 16rpx;
+  border-radius: 16rpx;
+  background: #e8f2df;
+  color: #2f7d5c;
+  font-size: 24rpx;
+  font-weight: 800;
+  text-align: center;
+}
+
+.mini-button.primary {
+  background: #2f7d5c;
+  color: #fff;
+}
+
+.feedback-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 24rpx;
+  background: rgba(34, 53, 45, 0.16);
+}
+
+.rating-row {
+  margin: 24rpx 0;
+}
+
+.rating-star {
+  margin-right: 14rpx;
+  color: #c8cec8;
+  font-size: 48rpx;
+}
+
+.rating-star.active {
+  color: #f2b84b;
+}

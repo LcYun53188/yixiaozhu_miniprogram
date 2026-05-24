@@ -1,0 +1,17 @@
+.section {
+  line-height: 1.8;
+}
+
+.detail-images {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14rpx;
+  margin-top: 20rpx;
+}
+
+.detail-image {
+  width: 190rpx;
+  height: 190rpx;
+  border-radius: 20rpx;
+  background: #eef1ec;
+}

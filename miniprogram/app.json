@@ -1,0 +1,44 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/category/category",
+    "pages/publish/publish",
+    "pages/match/match",
+    "pages/detail/detail",
+    "pages/message/message",
+    "pages/profile/profile",
+    "pages/admin/admin"
+  ],
+  "window": {
+    "navigationBarTitleText": "益小助",
+    "navigationBarBackgroundColor": "#2f7d5c",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f7ef"
+  },
+  "tabBar": {
+    "color": "#7c887f",
+    "selectedColor": "#2f7d5c",
+    "backgroundColor": "#fffdf7",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/publish/publish",
+        "text": "发布"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

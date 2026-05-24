@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="section-title">消息与记录</view>
+  <view class="card" wx:for="{{messages}}" wx:key="id">
+    <view class="card-title">{{item.title}}</view>
+    <view class="muted">{{item.messageType}} · {{item.createdAt}}</view>
+    <view class="section">{{item.content}}</view>
+  </view>
+  <view class="muted" wx:if="{{!messages.length}}">暂无消息，提交发布或审核后会在这里出现。</view>
+</view>

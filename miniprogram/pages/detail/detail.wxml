@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="card" wx:if="{{detail}}">
+    <view class="card-title">{{detail.title}}</view>
+    <view class="muted">{{detail.category}} · {{detail.reviewStatusText}} · {{detail.flowStatusText}}</view>
+    <view class="tags">
+      <text class="tag" wx:for="{{detail.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="detail-images" wx:if="{{detail.imageUrls && detail.imageUrls.length}}">
+      <image class="detail-image" wx:for="{{detail.imageUrls}}" wx:key="*this" src="{{item}}" mode="aspectFill" bindtap="previewImage" data-url="{{item}}" />
+    </view>
+    <view class="section">
+      <view class="section-title">描述</view>
+      <view>{{detail.polishedText || detail.description}}</view>
+    </view>
+    <view class="section muted">联系方式：{{detail.contactInfo || '待补充'}}</view>
+    <view class="section muted" wx:if="{{detail.locationText}}">交接地点：{{detail.locationText}}</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">相关推荐</view>
+    <view class="card" wx:for="{{detail.matches}}" wx:key="id">
+      <view class="card-title">匹配度 {{item.matchScore}}%</view>
+      <view class="muted">{{item.matchReason}}</view>
+      <view wx:if="{{item.need}}">需求：{{item.need.title}}</view>
+      <view wx:if="{{item.resource}}">资源：{{item.resource.title}}</view>
+    </view>
+  </view>
+</view>
