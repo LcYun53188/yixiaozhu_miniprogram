@@ -29,9 +29,18 @@ router.post("/moderation", authRequired, (req, res) => {
 router.post("/image-assist", authRequired, (req, res) => {
   ok(res, {
     taskType: "image_assist",
-    category: "闲置物资",
-    tags: ["图片待接入", "物资识别"],
-    suggestion: "当前为比赛演示兜底结果，后续可接入视觉模型或云开发图片识别。"
+    success: true,
+    ...aiService.assistByImage(req.body),
+    suggestion: "当前为演示兜底识别结果，发布前可手动删改标题、标签和描述。"
+  });
+});
+
+router.post("/isbn-assist", authRequired, (req, res) => {
+  const result = aiService.assistByIsbn(req.body.isbn || req.body.code);
+  if (!result.success) return fail(res, 400, result.message);
+  ok(res, {
+    taskType: "isbn_assist",
+    ...result
   });
 });
 

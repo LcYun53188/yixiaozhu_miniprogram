@@ -11,6 +11,8 @@ const store = {
       studentNo: "20260001",
       realName: "张同学",
       college: "计算机学院",
+      identityVerified: true,
+      verifiedAt: now,
       role: "user",
       creditScore: 100,
       ratingCount: 0,
@@ -27,6 +29,8 @@ const store = {
       studentNo: "",
       realName: "管理员",
       college: "校团委",
+      identityVerified: true,
+      verifiedAt: now,
       role: "admin",
       creditScore: 100,
       ratingCount: 0,
@@ -43,7 +47,27 @@ const store = {
       studentNo: "20260002",
       realName: "李同学",
       college: "数学学院",
+      identityVerified: true,
+      verifiedAt: now,
       role: "user",
+      creditScore: 100,
+      ratingCount: 0,
+      status: "active",
+      createdAt: now,
+      updatedAt: now
+    },
+    {
+      id: 4,
+      openid: "demo-super-admin",
+      nickname: "超级管理员",
+      avatarUrl: "",
+      phone: "13600000000",
+      studentNo: "",
+      realName: "超级管理员",
+      college: "项目组",
+      identityVerified: true,
+      verifiedAt: now,
+      role: "super_admin",
       creditScore: 100,
       ratingCount: 0,
       status: "active",
@@ -109,7 +133,19 @@ const store = {
   reviews: [],
   messages: [],
   favorites: [],
-  feedbacks: []
+  feedbacks: [],
+  adminInviteCodes: (process.env.ADMIN_INVITE_CODES || "YXZ-ADMIN-DEMO")
+    .split(",")
+    .map((code) => code.trim())
+    .filter(Boolean)
+    .map((code) => ({
+      code,
+      used: false,
+      disabled: false,
+      usedBy: null,
+      usedAt: null,
+      createdAt: now
+    }))
 };
 
 module.exports = store;

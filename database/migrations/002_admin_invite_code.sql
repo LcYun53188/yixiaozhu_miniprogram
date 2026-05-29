@@ -1,0 +1,18 @@
+SET NAMES utf8mb4;
+
+USE yixiaozhu;
+
+CREATE TABLE IF NOT EXISTS admin_invite_code (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  invite_code VARCHAR(64) NOT NULL UNIQUE,
+  used TINYINT NOT NULL DEFAULT 0,
+  disabled TINYINT NOT NULL DEFAULT 0,
+  used_by BIGINT NULL,
+  used_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO admin_invite_code (invite_code)
+VALUES
+  ('YXZ-ADMIN-DEMO')
+ON DUPLICATE KEY UPDATE invite_code = VALUES(invite_code);

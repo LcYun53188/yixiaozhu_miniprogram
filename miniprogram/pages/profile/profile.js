@@ -9,7 +9,13 @@ Page({
       needCount: 0,
       matchCount: 0
     },
-    feedbacks: []
+    feedbacks: [],
+    offlineAccounts: [
+      { code: "demo-user", nickname: "张同学", roleText: "普通用户" },
+      { code: "demo-need-user", nickname: "李同学", roleText: "需求方用户" },
+      { code: "demo-admin", nickname: "管理员", roleText: "管理员" },
+      { code: "demo-super-admin", nickname: "超级管理员", roleText: "超级管理员" }
+    ]
   },
 
   onShow() {
@@ -32,27 +38,50 @@ Page({
     });
   },
 
-  loginAsAdmin() {
+  loginByWechat() {
     const app = getApp();
-    api.login({ code: "demo-admin", nickname: "管理员" }).then((data) => {
-      app.globalData.token = data.token;
-      app.globalData.user = data.user;
-      wx.setStorageSync("token", data.token);
-      wx.setStorageSync("user", data.user);
-      this.setData({ user: statusText.decorateItem(data.user) });
-      wx.showToast({ title: "已切换管理员" });
+
+    const doLogin = (profile = {}) => {
+      api.loginByWechatCode(profile).then(() => {
+        const user = app.globalData.user || wx.getStorageSync("user");
+        this.setData({ user: statusText.decorateItem(user) });
+        wx.showToast({ title: "微信登录成功" });
+        this.onShow();
+      }).catch(() => {
+        wx.showToast({ title: "微信登录失败", icon: "none" });
+      });
+    };
+
+    if (!wx.getUserProfile) {
+      doLogin();
+      return;
+    }
+
+    wx.getUserProfile({
+      desc: "用于完善益小助用户资料",
+      success: (res) => {
+        doLogin({
+          nickname: res.userInfo.nickName,
+          avatarUrl: res.userInfo.avatarUrl
+        });
+      },
+      fail: () => {
+        doLogin();
+      }
     });
   },
 
-  logoutAdmin() {
+  loginOffline(event) {
     const app = getApp();
-    api.login({ code: "demo-user", nickname: "张同学" }).then((data) => {
+    const { code, nickname } = event.currentTarget.dataset;
+    api.login({ code, nickname }).then((data) => {
       app.globalData.token = data.token;
       app.globalData.user = data.user;
       wx.setStorageSync("token", data.token);
       wx.setStorageSync("user", data.user);
       this.setData({ user: statusText.decorateItem(data.user) });
-      wx.showToast({ title: "已切回普通用户" });
+      wx.showToast({ title: "已切换账号" });
+      this.onShow();
     });
   },
 
@@ -62,6 +91,10 @@ Page({
 
   goMatch() {
     wx.navigateTo({ url: "/pages/match/match" });
+  },
+
+  goSettings() {
+    wx.navigateTo({ url: "/pages/settings/settings" });
   },
 
   goAdmin() {

@@ -1,16 +1,28 @@
 <view class="page">
   <view class="hero">
     <view class="hero-title">{{user.nickname || '校园用户'}}</view>
-    <view class="hero-subtitle">身份：{{user.roleText || '普通用户'}} · {{user.college || '未填写学院'}}</view>
+    <view class="hero-subtitle">身份：{{user.roleText || '普通用户'}} · {{user.identityVerified ? '已验证' : '未验证'}} · {{user.college || '未填写学院'}}</view>
   </view>
 
   <view class="section grid">
     <view class="grid-item" bindtap="goMessage">消息与记录</view>
     <view class="grid-item" bindtap="goMatch">匹配记录</view>
-    <view class="grid-item" wx:if="{{user.role !== 'admin' && user.role !== 'super_admin'}}" bindtap="loginAsAdmin">管理员演示登录</view>
-    <view class="grid-item danger" wx:else bindtap="logoutAdmin">退出管理员</view>
+    <view class="grid-item" bindtap="goSettings">个人设置</view>
     <view class="grid-item" wx:if="{{user.role === 'admin' || user.role === 'super_admin'}}" bindtap="goAdmin">后台管理</view>
-    <view class="grid-item disabled" wx:else>后台管理</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">离线演示账号</view>
+    <view class="card">
+      <view class="muted">演示阶段可直接切换账号验证不同角色，无需微信登录。</view>
+      <view class="offline-grid">
+        <view class="offline-account" wx:for="{{offlineAccounts}}" wx:key="code" bindtap="loginOffline" data-code="{{item.code}}" data-nickname="{{item.nickname}}">
+          <view class="card-title">{{item.nickname}}</view>
+          <view class="muted">{{item.roleText}}</view>
+        </view>
+      </view>
+      <view class="button secondary" bindtap="loginByWechat">尝试微信登录</view>
+    </view>
   </view>
 
   <view class="section">

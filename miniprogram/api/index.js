@@ -1,6 +1,8 @@
-const { request } = require("./request");
+const { request, loginByWechatCode, loginByDemoUser } = require("./request");
 
 module.exports = {
+  loginByWechatCode,
+  loginByDemoUser,
   login(data) {
     return request({ url: "/user/login", method: "POST", data });
   },
@@ -21,6 +23,12 @@ module.exports = {
   },
   aiPolish(text) {
     return request({ url: "/ai/polish", method: "POST", data: { text } });
+  },
+  aiImageAssist(data) {
+    return request({ url: "/ai/image-assist", method: "POST", data });
+  },
+  aiIsbnAssist(isbn) {
+    return request({ url: "/ai/isbn-assist", method: "POST", data: { isbn } });
   },
   getMatches(params) {
     return request({ url: "/match/list", data: params });
@@ -43,6 +51,12 @@ module.exports = {
   getProfile() {
     return request({ url: "/user/profile" });
   },
+  redeemAdminInvite(code) {
+    return request({ url: "/user/admin-invite/redeem", method: "POST", data: { code } });
+  },
+  verifyIdentity(data) {
+    return request({ url: "/user/identity/verify", method: "POST", data });
+  },
   getAdminSummary() {
     return request({ url: "/admin/dashboard/summary" });
   },
@@ -54,5 +68,20 @@ module.exports = {
   },
   rejectReview(data) {
     return request({ url: "/admin/review/reject", method: "POST", data });
+  },
+  getAdminUsers() {
+    return request({ url: "/admin/user/list" });
+  },
+  updateUserRole(id, role) {
+    return request({ url: `/admin/user/role/${id}`, method: "PUT", data: { role } });
+  },
+  getAdminInvites() {
+    return request({ url: "/admin/invite/list" });
+  },
+  createAdminInvite(code = "") {
+    return request({ url: "/admin/invite/create", method: "POST", data: { code } });
+  },
+  disableAdminInvite(code) {
+    return request({ url: "/admin/invite/disable", method: "PUT", data: { code } });
   }
 };

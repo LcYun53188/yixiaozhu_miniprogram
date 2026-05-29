@@ -1,0 +1,26 @@
+task mode: create
+primary deck-profile: product-platform
+secondary profile gates: strategy-leadership
+required proof objects:
+- project positioning
+- background and pain points
+- core application scenarios
+- product flow and functional highlights
+- UI showcase based on current mini program screenshots
+- technical architecture
+- current implementation foundation
+- competition value and roadmap
+source/asset requirements:
+- use current project introduction document as core narrative source
+- keep project link visible on cover or closing slide
+- no unofficial logos or fabricated product screenshots
+brand authenticity constraints:
+- use only project name text, no unofficial corporate marks
+- use clean geometric icons and native shapes for platform diagrams
+profile-specific QA gates:
+- every slide has a clear claim
+- contact sheet shows varied rhythm rather than repeated bullet pages
+- AI, image upload, user estimated price, and credit mechanism are visibly represented
+known missing inputs:
+- no official school/club visual identity package provided
+- no final product screenshots bundle provided, so use text-led interface summaries

@@ -1,4 +1,5 @@
 const express = require("express");
+const crypto = require("crypto");
 const store = require("../data/store");
 const matchService = require("../services/matchService");
 const { authRequired, adminRequired } = require("../middlewares/auth");
@@ -145,6 +146,42 @@ router.put("/user/role/:id", (req, res) => {
   user.role = req.body.role;
   user.updatedAt = new Date().toISOString();
   ok(res, user, "用户角色已更新");
+});
+
+router.get("/invite/list", (req, res) => {
+  const rows = store.adminInviteCodes.map((item) => ({
+    ...item,
+    usedByUser: item.usedBy ? store.users.find((user) => user.id === item.usedBy) : null
+  }));
+  ok(res, rows);
+});
+
+router.post("/invite/create", (req, res) => {
+  const customCode = String(req.body.code || "").trim();
+  const code = customCode || `YXZ-ADMIN-${crypto.randomBytes(4).toString("hex").toUpperCase()}`;
+
+  if (store.adminInviteCodes.some((item) => item.code === code)) {
+    return fail(res, 409, "邀请码已存在");
+  }
+
+  const invite = {
+    code,
+    used: false,
+    disabled: false,
+    usedBy: null,
+    usedAt: null,
+    createdAt: new Date().toISOString()
+  };
+  store.adminInviteCodes.push(invite);
+  ok(res, invite, "邀请码已生成");
+});
+
+router.put("/invite/disable", (req, res) => {
+  const code = String(req.body.code || "").trim();
+  const invite = store.adminInviteCodes.find((item) => item.code === code);
+  if (!invite) return fail(res, 404, "邀请码不存在");
+  invite.disabled = true;
+  ok(res, invite, "邀请码已停用");
 });
 
 module.exports = router;

@@ -12,15 +12,15 @@
   flex: 1;
   padding: 16rpx;
   border-radius: 16rpx;
-  background: #e8f2df;
-  color: #2f7d5c;
+  background: linear-gradient(145deg, #e0f2f1, #b2dfdb);
+  color: #102027;
   font-size: 24rpx;
   font-weight: 800;
   text-align: center;
 }
 
 .mini-button.primary {
-  background: #2f7d5c;
+  background: linear-gradient(145deg, #ffb300, #ff8f00);
   color: #fff;
 }
 
@@ -30,7 +30,7 @@
   right: 0;
   bottom: 0;
   padding: 24rpx;
-  background: rgba(34, 53, 45, 0.16);
+  background: rgba(16, 32, 39, 0.26);
 }
 
 .rating-row {

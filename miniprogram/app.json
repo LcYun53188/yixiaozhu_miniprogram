@@ -7,35 +7,44 @@
     "pages/detail/detail",
     "pages/message/message",
     "pages/profile/profile",
+    "pages/settings/settings",
     "pages/admin/admin"
   ],
   "window": {
     "navigationBarTitleText": "益小助",
-    "navigationBarBackgroundColor": "#2f7d5c",
+    "navigationBarBackgroundColor": "#102027",
     "navigationBarTextStyle": "white",
-    "backgroundColor": "#f5f7ef"
+    "backgroundColor": "#F3F6F7"
   },
   "tabBar": {
-    "color": "#7c887f",
-    "selectedColor": "#2f7d5c",
-    "backgroundColor": "#fffdf7",
+    "color": "#607D8B",
+    "selectedColor": "#FF8F00",
+    "backgroundColor": "#102027",
     "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/home/home",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home-active.png"
       },
       {
         "pagePath": "pages/category/category",
-        "text": "分类"
+        "text": "分类",
+        "iconPath": "assets/tabbar/category.png",
+        "selectedIconPath": "assets/tabbar/category-active.png"
       },
       {
         "pagePath": "pages/publish/publish",
-        "text": "发布"
+        "text": "发布",
+        "iconPath": "assets/tabbar/publish.png",
+        "selectedIconPath": "assets/tabbar/publish-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "assets/tabbar/profile.png",
+        "selectedIconPath": "assets/tabbar/profile-active.png"
       }
     ]
   },

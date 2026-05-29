@@ -3,8 +3,16 @@ const statusText = require("../../utils/statusText");
 
 Page({
   data: {
-    categories: ["全部", "旧书教材", "闲置物资", "失物招领", "爱心帮扶", "公益活动"],
+    categories: [
+      { label: "全部", value: "" },
+      { label: "旧书教材", value: "旧书教材" },
+      { label: "闲置物资", value: "闲置物资" },
+      { label: "失物招领", value: "失物招领" },
+      { label: "爱心帮扶", value: "爱心帮扶" },
+      { label: "公益活动", value: "公益活动" }
+    ],
     category: "",
+    activeType: "resource",
     keyword: "",
     resources: [],
     needs: []
@@ -29,7 +37,11 @@ Page({
 
   selectCategory(event) {
     const category = event.currentTarget.dataset.category;
-    this.setData({ category: category === "全部" ? "" : category }, this.loadData);
+    this.setData({ category }, this.loadData);
+  },
+
+  switchType(event) {
+    this.setData({ activeType: event.currentTarget.dataset.type });
   },
 
   loadData() {

@@ -1,7 +1,7 @@
 page {
   min-height: 100vh;
-  background: #f5f7ef;
-  color: #22352d;
+  background: linear-gradient(180deg, #f6fafb 0%, #eef3f4 48%, #fff8e1 100%);
+  color: #212121;
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
@@ -10,11 +10,13 @@ page {
 }
 
 .hero {
-  padding: 36rpx 32rpx;
+  padding: 40rpx 34rpx;
   border-radius: 32rpx;
-  background: linear-gradient(135deg, #2f7d5c, #7fb069);
-  color: #fffdf7;
-  box-shadow: 0 18rpx 40rpx rgba(47, 125, 92, 0.18);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 143, 0, 0.26), transparent 32%),
+    linear-gradient(135deg, #102027 0%, #203a43 54%, #2c5364 100%);
+  color: #ffffff;
+  box-shadow: 0 24rpx 54rpx rgba(16, 32, 39, 0.28);
 }
 
 .hero-title {
@@ -27,7 +29,7 @@ page {
   margin-top: 12rpx;
   font-size: 26rpx;
   line-height: 1.7;
-  opacity: 0.92;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .section {
@@ -38,23 +40,28 @@ page {
   margin-bottom: 18rpx;
   font-size: 32rpx;
   font-weight: 800;
+  color: #212121;
 }
 
 .card {
   margin-bottom: 18rpx;
-  padding: 24rpx;
+  padding: 26rpx;
   border-radius: 24rpx;
-  background: #fffdf7;
-  box-shadow: 0 10rpx 30rpx rgba(34, 53, 45, 0.08);
+  background: linear-gradient(145deg, #ffffff 0%, #f8fbfb 100%);
+  border: 2rpx solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 20rpx 42rpx rgba(16, 32, 39, 0.14),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.85);
 }
 
 .card-title {
   font-size: 30rpx;
   font-weight: 750;
+  color: #212121;
 }
 
 .muted {
-  color: #77847b;
+  color: #757575;
   font-size: 24rpx;
 }
 
@@ -66,11 +73,12 @@ page {
 }
 
 .tag {
-  padding: 8rpx 14rpx;
+  padding: 10rpx 16rpx;
   border-radius: 999rpx;
-  background: #e8f2df;
-  color: #2f7d5c;
+  background: linear-gradient(145deg, #fff8e1, #ffe0b2);
+  color: #4e342e;
   font-size: 22rpx;
+  box-shadow: 0 8rpx 18rpx rgba(255, 143, 0, 0.12);
 }
 
 .grid {
@@ -80,12 +88,15 @@ page {
 }
 
 .grid-item {
-  padding: 24rpx;
+  padding: 26rpx;
   border-radius: 22rpx;
-  background: #fffdf7;
+  background: linear-gradient(145deg, #ffffff, #e9f5f5);
+  color: #212121;
   font-weight: 700;
   text-align: center;
-  box-shadow: 0 10rpx 26rpx rgba(34, 53, 45, 0.07);
+  box-shadow:
+    0 18rpx 34rpx rgba(16, 32, 39, 0.13),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.9);
 }
 
 .input,
@@ -95,10 +106,13 @@ page {
   width: 100%;
   margin-top: 12rpx;
   border-radius: 18rpx;
-  background: #fffdf7;
-  border: 2rpx solid #e4eadf;
-  color: #22352d;
+  background: #f7fbfb;
+  border: 2rpx solid #d7e5e6;
+  color: #212121;
   font-size: 28rpx;
+  box-shadow:
+    inset 0 6rpx 16rpx rgba(16, 32, 39, 0.08),
+    inset 0 -2rpx 0 rgba(255, 255, 255, 0.85);
 }
 
 .input {
@@ -109,7 +123,7 @@ page {
 }
 
 .input-placeholder {
-  color: #9aa59d;
+  color: #8a9aa0;
   font-size: 28rpx;
   line-height: 88rpx;
 }
@@ -130,13 +144,17 @@ page {
   margin-top: 22rpx;
   padding: 22rpx;
   border-radius: 20rpx;
-  background: #2f7d5c;
+  background: linear-gradient(145deg, #ffb300, #ff8f00);
   color: #fff;
   text-align: center;
   font-weight: 800;
+  box-shadow:
+    0 16rpx 30rpx rgba(255, 143, 0, 0.3),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.36);
 }
 
 .button.secondary {
-  background: #f2b84b;
-  color: #3d2d12;
+  background: linear-gradient(145deg, #e0f2f1, #b2dfdb);
+  color: #102027;
+  box-shadow: 0 14rpx 28rpx rgba(16, 32, 39, 0.14);
 }

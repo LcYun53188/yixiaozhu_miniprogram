@@ -4,6 +4,11 @@ const statusText = require("../../utils/statusText");
 Page({
   data: {
     categories: ["旧书教材", "闲置物资", "失物招领", "爱心帮扶", "公益活动", "AI推荐"],
+    notices: [
+      "欢迎使用益小助，发布前请确保信息真实有效。",
+      "旧书教材、闲置物资、失物招领均可在这里快速匹配。",
+      "完成对接后记得评价，对方信誉积分会同步更新。"
+    ],
     resources: [],
     needs: []
   },

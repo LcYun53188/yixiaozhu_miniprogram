@@ -1,11 +1,22 @@
+SET NAMES utf8mb4;
+
 USE yixiaozhu;
 
-INSERT INTO user (openid, nickname, phone, student_no, real_name, college, role, credit_score, rating_count)
+INSERT INTO user (openid, nickname, phone, student_no, real_name, college, identity_verified, verified_at, role, credit_score, rating_count)
 VALUES
-  ('demo-user', '张同学', '13800000000', '20260001', '张同学', '计算机学院', 'user', 100, 0),
-  ('demo-admin', '管理员', '13900000000', '', '管理员', '校团委', 'admin', 100, 0),
-  ('demo-need-user', '李同学', '13700000000', '20260002', '李同学', '数学学院', 'user', 100, 0)
-ON DUPLICATE KEY UPDATE nickname = VALUES(nickname), role = VALUES(role);
+  ('demo-user', '张同学', '13800000000', '20260001', '张同学', '计算机学院', 1, NOW(), 'user', 100, 0),
+  ('demo-admin', '管理员', '13900000000', '', '管理员', '校团委', 1, NOW(), 'admin', 100, 0),
+  ('demo-need-user', '李同学', '13700000000', '20260002', '李同学', '数学学院', 1, NOW(), 'user', 100, 0),
+  ('demo-super-admin', '超级管理员', '13600000000', '', '超级管理员', '项目组', 1, NOW(), 'super_admin', 100, 0)
+ON DUPLICATE KEY UPDATE
+  nickname = VALUES(nickname),
+  phone = VALUES(phone),
+  student_no = VALUES(student_no),
+  real_name = VALUES(real_name),
+  college = VALUES(college),
+  identity_verified = VALUES(identity_verified),
+  verified_at = VALUES(verified_at),
+  role = VALUES(role);
 
 INSERT INTO resource (user_id, title, description, polished_text, category, tags, contact_info, location_text, review_status, flow_status, ai_risk_level, ai_risk_reason, published_at)
 VALUES
@@ -19,3 +30,8 @@ INSERT INTO match_record (resource_id, need_id, match_score, match_reason, statu
 VALUES
   (1, 1, 92, '分类一致；标签重合：高数；关键词相关：高数；需求较紧急', 'recommended')
 ON DUPLICATE KEY UPDATE match_score = VALUES(match_score), match_reason = VALUES(match_reason);
+
+INSERT INTO admin_invite_code (invite_code)
+VALUES
+  ('YXZ-ADMIN-DEMO')
+ON DUPLICATE KEY UPDATE invite_code = VALUES(invite_code);

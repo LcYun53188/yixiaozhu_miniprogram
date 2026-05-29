@@ -4,7 +4,7 @@
 
 本项目已按文档中的比赛落地版目标创建项目骨架，当前版本优先打通：
 
-1. 登录与角色识别
+1. 登录、身份验证与角色识别
 2. 资源/需求发布
 3. AI 分类、标签、文案优化、风险识别的规则兜底
 4. 管理员审核通过/驳回
@@ -12,6 +12,7 @@
 6. 消息通知、匹配记录、后台统计
 7. 双方信誉积分与对接评价
 8. 微信小程序主要页面原型
+9. 微信登录后的学号姓名验证
 
 ## 后端启动
 
@@ -30,8 +31,8 @@ http://localhost:3000/api
 当前后端使用内存数据，方便演示和联调。后续接 MySQL 时，可先执行：
 
 ```powershell
-mysql -u root -p < database/schema.sql
-mysql -u root -p < database/seed.sql
+mysql --default-character-set=utf8mb4 -u root -p < database/schema.sql
+mysql --default-character-set=utf8mb4 -u root -p < database/seed.sql
 ```
 
 ## Docker 开发环境
@@ -84,10 +85,16 @@ docker compose up -d --build
 如果已有数据库卷且不想清空数据，可进入 MySQL 后执行：
 
 ```powershell
-docker compose exec mysql mysql -uyixiaozhu -pyixiaozhu_dev yixiaozhu < database/migrations/001_credit_feedback.sql
+Get-Content -Raw -Encoding UTF8 .\database\migrations\001_credit_feedback.sql | docker compose exec -T mysql mysql --default-character-set=utf8mb4 -uyixiaozhu -pyixiaozhu_dev yixiaozhu
 ```
 
-注意：PowerShell 对容器内重定向支持不稳定时，可改用数据库客户端或 phpMyAdmin 导入该 SQL 文件。
+注意：手动导入 SQL 时请保持 `utf8mb4` 连接字符集。PowerShell 对容器内重定向支持不稳定时，推荐使用上面的 `Get-Content -Encoding UTF8 | docker compose exec -T ... --default-character-set=utf8mb4` 写法，或在 phpMyAdmin 导入前确认文件编码为 UTF-8。
+
+如果 phpMyAdmin 中演示用户中文字段出现 `å¼ åŒå­¦` 这类乱码，可执行修复迁移：
+
+```powershell
+Get-Content -Raw -Encoding UTF8 .\database\migrations\004_fix_utf8mb4_user_seed.sql | docker compose exec -T mysql mysql --default-character-set=utf8mb4 -uyixiaozhu -pyixiaozhu_dev yixiaozhu
+```
 
 ## 小程序运行
 
@@ -96,6 +103,20 @@ docker compose exec mysql mysql -uyixiaozhu -pyixiaozhu_dev yixiaozhu < database
 3. AppID 可先使用测试号或 `touristappid`
 4. 确认 `miniprogram/app.js` 中 `apiBaseUrl` 指向后端地址
 5. 本地调试时关闭合法域名校验
+
+### 微信登录后的学号姓名验证
+
+真实微信用户首次登录后默认为“未验证”。用户需要在“个人设置”页填写：
+
+```text
+学号
+真实姓名
+学院（可选）
+```
+
+验证成功后，后端会保存 `studentNo`、`realName`、`college`，并将 `identityVerified` 标记为 `true`。未验证用户不能发布资源/需求，也不能使用管理员邀请码。
+
+演示账号默认已验证，便于离线演示。
 
 如果微信开发者工具中出现 `timeout`，优先检查：
 
@@ -113,6 +134,15 @@ docker compose exec mysql mysql -uyixiaozhu -pyixiaozhu_dev yixiaozhu < database
 3. 选择相册或相机图片
 4. 提交资源或需求
 5. 审核通过后进入详情页查看图片展示
+
+### 扫码 ISBN 与照片识别
+
+1. 进入小程序“发布”页
+2. 点击“扫码识别ISBN”可扫描图书条形码并自动填充图书标题、分类、标签和描述
+3. 点击“照片识别物品”可从相册或相机选择图片，并生成物品分类、标签和描述建议
+4. 识别结果会自动写入表单，但标题、分类、描述和标签都可以继续手动删改
+
+当前图像识别为演示兜底逻辑。正式接入图像识别 API 的配置流程见 [IMAGE_RECOGNITION_SETUP.md](IMAGE_RECOGNITION_SETUP.md)。
 
 ### 管理员审核
 
@@ -137,11 +167,20 @@ docker compose restart backend
 
 ## 演示账号
 
+演示阶段可直接在小程序“我的”页选择离线演示账号，不依赖微信登录。
+
 普通用户：
 
 ```text
 code: demo-user
 token: demo-token-1
+```
+
+需求方用户：
+
+```text
+code: demo-need-user
+token: demo-token-3
 ```
 
 管理员：
@@ -151,7 +190,16 @@ code: demo-admin
 token: demo-token-2
 ```
 
-小程序“我的”页面提供“管理员演示登录”按钮，便于进入后台审核。
+超级管理员：
+
+```text
+code: demo-super-admin
+token: demo-token-4
+```
+
+小程序“我的”页面提供离线演示账号入口，便于在无微信登录条件下验证普通用户、需求方、管理员和超级管理员流程。
+
+正式部署时，首个超级管理员应由部署人员在数据库中手动配置。详细流程见 [SUPER_ADMIN_SETUP.md](SUPER_ADMIN_SETUP.md)。
 
 ## 推荐开发顺序
 

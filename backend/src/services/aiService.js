@@ -8,6 +8,27 @@ const categoryKeywords = {
 
 const riskWords = ["广告", "兼职", "刷单", "贷款", "博彩", "加群赚钱"];
 
+const demoBooks = {
+  "9787040396638": {
+    title: "高等数学教材转赠",
+    category: "旧书教材",
+    tags: ["教材", "高数", "大学数学", "本科", "ISBN"],
+    description: "识别到 ISBN 9787040396638，疑似高等数学相关教材。请根据实际书名、版本和新旧程度手动确认后发布。"
+  },
+  "9787302336518": {
+    title: "数据结构教材转赠",
+    category: "旧书教材",
+    tags: ["教材", "数据结构", "计算机", "编程", "ISBN"],
+    description: "识别到 ISBN 9787302336518，疑似计算机类教材。请补充出版社、版本、新旧程度和交接地点。"
+  },
+  "9787115546081": {
+    title: "计算机网络教材转赠",
+    category: "旧书教材",
+    tags: ["教材", "计算机网络", "计算机", "ISBN"],
+    description: "识别到 ISBN 9787115546081，疑似计算机网络相关教材。请核对书名和版本后发布。"
+  }
+};
+
 function normalizeText(text = "") {
   return String(text).trim();
 }
@@ -47,6 +68,89 @@ function polish(text) {
   if (!content) return "";
   if (content.length >= 40) return content;
   return `${content}。信息真实有效，可在校内约定地点对接，欢迎有需要的同学联系。`;
+}
+
+function normalizeIsbn(isbn = "") {
+  return String(isbn).replace(/[^0-9Xx]/g, "").toUpperCase();
+}
+
+function assistByIsbn(isbn) {
+  const normalized = normalizeIsbn(isbn);
+  if (!normalized || ![10, 13].includes(normalized.length)) {
+    return {
+      success: false,
+      isbn: normalized,
+      message: "未识别到有效 ISBN，请重新扫码或手动输入"
+    };
+  }
+
+  const known = demoBooks[normalized];
+  if (known) {
+    return {
+      success: true,
+      isbn: normalized,
+      source: "demo_library",
+      ...known
+    };
+  }
+
+  return {
+    success: true,
+    isbn: normalized,
+    source: "rule_fallback",
+    title: `ISBN ${normalized} 图书`,
+    category: "旧书教材",
+    tags: ["图书", "教材", "ISBN", normalized],
+    description: `已识别 ISBN：${normalized}。请根据书籍封面核对书名、版本、新旧程度和适用课程后发布。`
+  };
+}
+
+function assistByImage(payload = {}) {
+  const hint = normalizeText(payload.hint || payload.fileName || payload.imageUrl || "");
+  const lowerHint = hint.toLowerCase();
+
+  if (hint.includes("书") || hint.includes("教材") || lowerHint.includes("book")) {
+    return {
+      category: "旧书教材",
+      title: "图书教材转赠",
+      tags: ["图书", "教材", "学习资料"],
+      description: "图片疑似图书或教材。请补充书名、版本、新旧程度和适用课程，可在校内约定地点交接。"
+    };
+  }
+
+  if (hint.includes("衣") || hint.includes("服") || lowerHint.includes("cloth")) {
+    return {
+      category: "闲置物资",
+      title: "闲置衣物转赠",
+      tags: ["衣物", "闲置物资", "生活用品"],
+      description: "图片疑似衣物类物品。请补充尺码、季节、新旧程度和领取方式。"
+    };
+  }
+
+  if (hint.includes("水杯") || hint.includes("杯") || lowerHint.includes("cup")) {
+    return {
+      category: "失物招领",
+      title: "水杯失物招领",
+      tags: ["水杯", "失物招领", "生活用品"],
+      description: "图片疑似水杯。请补充拾取地点、时间、颜色特征和认领方式。"
+    };
+  }
+
+  if (hint.includes("台灯") || hint.includes("灯") || lowerHint.includes("lamp")) {
+    return {
+      category: "闲置物资",
+      title: "闲置台灯转赠",
+      tags: ["台灯", "小家电", "闲置物资"],
+      description: "图片疑似台灯或小家电。请补充功能是否正常、新旧程度和交接地点。"
+    };
+  }
+
+  return {
+    category: "闲置物资",
+    title: "闲置物品发布",
+    tags: ["物品识别", "闲置物资", "待确认"],
+    description: "已根据图片生成初步物品信息。请手动确认物品名称、状态、新旧程度和交接方式后发布。"
+  };
 }
 
 function moderate(text) {
@@ -110,6 +214,8 @@ module.exports = {
   classify,
   extractTags,
   polish,
+  assistByIsbn,
+  assistByImage,
   moderate,
   scoreMatch
 };

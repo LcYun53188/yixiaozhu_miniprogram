@@ -22,4 +22,30 @@
     </view>
     <view class="muted" wx:if="{{!reviews.length}}">暂无待审核内容。</view>
   </view>
+
+  <view class="section">
+    <view class="section-title">管理员邀请码</view>
+    <view class="button" bindtap="createInvite">生成一次性邀请码</view>
+    <view class="card" wx:for="{{invites}}" wx:key="code">
+      <view class="card-title">{{item.code}}</view>
+      <view class="muted">
+        状态：{{item.disabled ? '已停用' : (item.used ? '已使用' : '未使用')}}
+      </view>
+      <view class="muted" wx:if="{{item.usedByUser}}">使用人：{{item.usedByUser.nickname}}</view>
+      <view class="muted">创建时间：{{item.createdAt}}</view>
+      <view class="button secondary" wx:if="{{!item.used && !item.disabled}}" bindtap="disableInvite" data-code="{{item.code}}">停用邀请码</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">管理员账户管理</view>
+    <view class="card" wx:for="{{users}}" wx:key="id">
+      <view class="card-title">{{item.nickname || '未命名用户'}}</view>
+      <view class="muted">身份：{{item.roleText}} · 信誉 {{item.creditScore || 100}}</view>
+      <view class="action-row">
+        <view class="mini-button primary" wx:if="{{item.role !== 'admin' && item.role !== 'super_admin'}}" bindtap="setAdmin" data-id="{{item.id}}">设为管理员</view>
+        <view class="mini-button" wx:if="{{item.role === 'admin'}}" bindtap="setUser" data-id="{{item.id}}">撤销管理员</view>
+      </view>
+    </view>
+  </view>
 </view>

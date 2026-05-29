@@ -17,6 +17,9 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE:-yixiaozhu}
       MYSQL_USER: ${MYSQL_USER:-yixiaozhu}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-yixiaozhu_dev}
+      WECHAT_APPID: ${WECHAT_APPID:-}
+      WECHAT_SECRET: ${WECHAT_SECRET:-}
+      ADMIN_INVITE_CODES: ${ADMIN_INVITE_CODES:-YXZ-ADMIN-DEMO}
     ports:
       - "${BACKEND_PORT:-3000}:3000"
     volumes:
@@ -35,6 +38,7 @@ services:
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+      - --init-connect=SET NAMES utf8mb4
       - --default-time-zone=+08:00
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-yixiaozhu_root}

@@ -1,3 +1,25 @@
 .button.secondary {
   margin-top: 12rpx;
 }
+
+.action-row {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+
+.mini-button {
+  flex: 1;
+  padding: 16rpx;
+  border-radius: 16rpx;
+  background: linear-gradient(145deg, #e0f2f1, #b2dfdb);
+  color: #102027;
+  font-size: 24rpx;
+  font-weight: 800;
+  text-align: center;
+}
+
+.mini-button.primary {
+  background: linear-gradient(145deg, #ffb300, #ff8f00);
+  color: #fff;
+}

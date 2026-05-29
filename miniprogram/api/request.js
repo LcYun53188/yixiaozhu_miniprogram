@@ -1,12 +1,44 @@
 const app = getApp();
 
-function ensureToken() {
-  const cachedToken = app.globalData.token || wx.getStorageSync("token");
-  if (cachedToken) {
-    app.globalData.token = cachedToken;
-    return Promise.resolve(cachedToken);
-  }
+function loginByWechatCode(profile = {}) {
+  return new Promise((resolve, reject) => {
+    wx.login({
+      success(loginResult) {
+        if (!loginResult.code) {
+          reject(new Error("微信登录未返回 code"));
+          return;
+        }
 
+        wx.request({
+          url: `${app.globalData.apiBaseUrl}/user/login`,
+          method: "POST",
+          timeout: 8000,
+          data: {
+            code: loginResult.code,
+            nickname: profile.nickname || "微信用户",
+            avatarUrl: profile.avatarUrl || ""
+          },
+          success(res) {
+            const body = res.data || {};
+            if (body.code !== 200) {
+              reject(body);
+              return;
+            }
+            app.globalData.token = body.data.token;
+            app.globalData.user = body.data.user;
+            wx.setStorageSync("token", body.data.token);
+            wx.setStorageSync("user", body.data.user);
+            resolve(body.data.token);
+          },
+          fail: reject
+        });
+      },
+      fail: reject
+    });
+  });
+}
+
+function loginByDemoUser() {
   return new Promise((resolve, reject) => {
     wx.request({
       url: `${app.globalData.apiBaseUrl}/user/login`,
@@ -31,6 +63,16 @@ function ensureToken() {
       fail: reject
     });
   });
+}
+
+function ensureToken() {
+  const cachedToken = app.globalData.token || wx.getStorageSync("token");
+  if (cachedToken) {
+    app.globalData.token = cachedToken;
+    return Promise.resolve(cachedToken);
+  }
+
+  return loginByWechatCode().catch(() => loginByDemoUser());
 }
 
 function request(options) {
@@ -66,4 +108,8 @@ function request(options) {
   }));
 }
 
-module.exports = { request };
+module.exports = {
+  request,
+  loginByWechatCode,
+  loginByDemoUser
+};

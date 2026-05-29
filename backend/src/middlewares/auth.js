@@ -29,4 +29,11 @@ function adminRequired(req, res, next) {
   next();
 }
 
-module.exports = { authRequired, adminRequired };
+function identityRequired(req, res, next) {
+  if (!req.user || !req.user.identityVerified) {
+    return fail(res, 403, "请先在个人设置中完成学号姓名验证");
+  }
+  next();
+}
+
+module.exports = { authRequired, adminRequired, identityRequired };

@@ -3,11 +3,28 @@
 }
 
 .danger {
-  background: #fff0e8;
+  background: linear-gradient(145deg, #fff8e1, #ffe0b2);
   color: #b8512f;
 }
 
 .disabled {
-  background: #eef1ec;
+  background: #e8ecee;
   color: #9aa59d;
+}
+
+.offline-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.offline-account {
+  padding: 18rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(145deg, #ffffff, #e0f2f1);
+  border: 2rpx solid rgba(255, 255, 255, 0.78);
+  box-shadow:
+    0 14rpx 28rpx rgba(16, 32, 39, 0.12),
+    inset 0 2rpx 0 rgba(255, 255, 255, 0.85);
 }

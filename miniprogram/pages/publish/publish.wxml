@@ -1,13 +1,27 @@
 <view class="page">
-  <view class="hero">
-    <view class="hero-title">发布信息</view>
-    <view class="hero-subtitle">可以发布“我有资源”或“我需要资源”，提交后进入管理员审核。</view>
+  <view class="publish-header">
+    <view class="publish-title">发布信息</view>
+    <view class="publish-subtitle">选择发布类型，填写必要信息后提交审核。</view>
   </view>
 
   <view class="section">
-    <view class="tags">
-      <text class="tag" bindtap="setType" data-type="resource">我有资源</text>
-      <text class="tag" bindtap="setType" data-type="need">我需要资源</text>
+    <view class="type-selector">
+      <text class="type-pill {{type === 'resource' ? 'active' : ''}}" bindtap="setType" data-type="resource">我有资源</text>
+      <text class="type-pill {{type === 'need' ? 'active' : ''}}" bindtap="setType" data-type="need">我需要资源</text>
+    </view>
+    <view class="recognize-box">
+      <view class="recognize-header" bindtap="toggleRecognizeMenu">
+        <view>
+          <view class="card-title">使用智能识别</view>
+          <view class="muted">扫码 ISBN 或拍照识别物品，结果可手动修改</view>
+        </view>
+        <view class="recognize-arrow">{{recognizeMenuOpen ? '收起' : '展开'}}</view>
+      </view>
+      <view class="smart-tools" wx:if="{{recognizeMenuOpen}}">
+        <view class="smart-tool" bindtap="scanIsbn">扫码识别ISBN</view>
+        <view class="smart-tool" bindtap="recognizeByCamera">相机识别物品</view>
+        <view class="smart-tool" bindtap="recognizeByAlbum">上传图片识别</view>
+      </view>
     </view>
     <input class="input form-input" placeholder-class="input-placeholder" placeholder="标题" value="{{form.title}}" data-field="title" bindinput="onInput" />
     <picker range="{{categories}}" bindchange="onCategory">
@@ -35,12 +49,20 @@
     <view class="section-title">AI 辅助</view>
     <view class="button secondary" bindtap="extractTags">智能提取标签</view>
     <view class="button secondary" bindtap="polishText">优化描述</view>
-    <view class="card" wx:if="{{form.tags.length || form.polishedText}}">
-      <view class="muted">AI 结果</view>
-      <view class="tags">
-        <text class="tag" wx:for="{{form.tags}}" wx:key="*this">{{item}}</text>
+    <view class="card" wx:if="{{form.tags.length || form.polishedText || assistTip}}">
+      <view class="muted">AI 结果，可手动删改</view>
+      <view class="editable-tags">
+        <view class="editable-tag" wx:for="{{form.tags}}" wx:key="*this">
+          <text>{{item}}</text>
+          <text class="tag-remove" bindtap="removeTag" data-index="{{index}}">×</text>
+        </view>
+      </view>
+      <view class="tag-editor">
+        <input class="input tag-input" placeholder-class="input-placeholder" placeholder="手动添加标签" value="{{newTag}}" bindinput="onNewTagInput" />
+        <view class="tag-add" bindtap="addTag">添加</view>
       </view>
       <view class="muted">{{form.polishedText}}</view>
+      <view class="muted" wx:if="{{assistTip}}">{{assistTip}}</view>
     </view>
   </view>
 

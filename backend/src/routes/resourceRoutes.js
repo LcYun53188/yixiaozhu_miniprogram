@@ -1,7 +1,7 @@
 const express = require("express");
 const store = require("../data/store");
 const aiService = require("../services/aiService");
-const { authRequired } = require("../middlewares/auth");
+const { authRequired, identityRequired } = require("../middlewares/auth");
 const { nextId } = require("../utils/id");
 const { ok, fail } = require("../utils/response");
 
@@ -21,7 +21,7 @@ function filterList(rows, query) {
   return result.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
 }
 
-router.post("/create", authRequired, (req, res) => {
+router.post("/create", authRequired, identityRequired, (req, res) => {
   if (!req.body.title || !req.body.description) {
     return fail(res, 400, "标题和描述不能为空");
   }
